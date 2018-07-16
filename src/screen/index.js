@@ -1,7 +1,9 @@
-import QRCode from './qrcode';
-import Barcode from './barcode'
+import QRCode from './QRCode';
+import Barcode from './Barcode'
+import Settings from './Settings';
 
 export default {
   QRCode,
-  Barcode
+  Barcode,
+  Settings
 }
