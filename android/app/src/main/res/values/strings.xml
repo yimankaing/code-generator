@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">codeGenerator</string>
+    <string name="app_name">Barcode Generator</string>
+
+    <string name="pairedDevices">Paired devices</string>
+    <string name="otherDevice">Other devices</string>
+    <string name="none_paired">No paired devices</string>
+    <string name="scanning">Scanning</string>
+    <string name="select_device">Select a device</string>
+    <string name="none_found">Device not found</string>
+    <string name="btnSearch">Connect  Bluetooth  Printer</string>
+    <string name="btnSend">Print Text</string>
+    <string name="btn_print">Print</string>
+    <string name="btnDis">Disconnect</string>
+    <string name="txt_content">&quot;&quot;</string>
+    <string name="menu_settings">set</string>
+    <string name="strLang">en</string>
+    <string name="button_scan">Search</string>
+    <string name="no_file">Such no file</string>
 </resources>

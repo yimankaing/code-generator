@@ -157,9 +157,10 @@ export const Metrics = {
 };
 
 export const uiTheme = {
-  fontFamily: 'Roboto-Thin',
+  fontFamily: 'Roboto',
   palette: {
-    primaryColor: COLOR.blue500,
+    primaryColor: COLOR.black,
+    accentColor: COLOR.blue500
   },
   toolbar: {
     container: {

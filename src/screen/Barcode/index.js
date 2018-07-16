@@ -1,11 +1,19 @@
 import React from 'react';
-import {ScrollView, Text, View, TextInput, ToastAndroid} from 'react-native';
-import {Subheader, Card, ListItem, COLOR, RippleFeedback, IconToggle} from 'react-native-material-ui';
+import {ScrollView, Text, View, NativeModules, ToastAndroid, Alert, TouchableOpacity} from 'react-native';
+import {Toolbar, COLOR, ActionButton} from 'react-native-material-ui';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {Dropdown} from 'react-native-material-dropdown';
 import {TextField} from 'react-native-material-textfield';
 import BarcodeBuilder from 'react-native-barcode-builder';
 import QRCodeBuilder from 'react-native-qrcode';
+import ViewShot from "react-native-view-shot";
+import RNFS from "react-native-fs";
+import Container from "../../components/Container";
+import {uiTheme} from "../../constants";
+
+const PrinterManager = NativeModules.PrinterManager;
+const imageType = "png";
+const imagePath = `${RNFS.ExternalDirectoryPath}/image.${imageType}`;
 
 export default class Barcode extends React.Component {
   constructor(props) {
@@ -21,7 +29,7 @@ export default class Barcode extends React.Component {
         value: value.input,
         type: value.type,
         format: "CODE128",
-        height: 65
+        height: 120
       };
       this.setState((prevState) => ({
         codes: [...prevState.codes, data]
@@ -30,11 +38,56 @@ export default class Barcode extends React.Component {
       ToastAndroid.show('Value cannot be empty', ToastAndroid.SHORT)
     }
   };
+  removeBarcode = (index) => {
+    Alert.alert(null, 'Delete barcode?', [
+      {text: 'Cancel', onPress: () => null, style: 'cancel'},
+      {
+        text: 'OK', onPress: () => {
+          this.state.codes.splice(index, 1);
 
+          this.setState((prevState) => ({
+            codes: prevState.codes
+          }), () => {
+            ToastAndroid.show('Deleted', ToastAndroid.SHORT)
+          })
+        }
+      }
+    ]);
+  };
+  print = async () => {
+    if (this.state.codes.length > 0) {
+      Alert.alert(null, 'Print barcode?', [
+        {text: 'Cancel', onPress: () => null, style: 'cancel'},
+        {
+          text: 'OK', onPress: () => {
+            this.refs.viewShot.capture().then(uri => {
+              RNFS.moveFile(uri, imagePath)
+                .then(() => {
+                  PrinterManager.printInvoice(imagePath, (res) => {
+                    if (res === 'connected') {
+                      ToastAndroid.show('Success', ToastAndroid.SHORT)
+                    }
+                  });
+                })
+                .catch((err) => {
+                  ToastAndroid.show(err.message, ToastAndroid.SHORT)
+                });
+            });
+          }
+        },
+      ]);
+    } else {
+      ToastAndroid.show('Barcode is empty', ToastAndroid.SHORT)
+    }
+  };
   _barcodeBuilder = () => {
     return this.state.codes.map((o, i) => {
       return (
-        <View style={{backgroundColor: '#fff'}} key={i}>
+        <TouchableOpacity
+          style={{backgroundColor: '#fff'}}
+          key={i}
+          onLongPress={() => this.removeBarcode(i)}
+        >
           {
             o.type === 'Barcode' ?
               <BarcodeBuilder value={o.value}
@@ -52,22 +105,41 @@ export default class Barcode extends React.Component {
                 <Text style={{color: "#000", padding: 3}}>{o.value}</Text>
               </View>
           }
-
-        </View>
+        </TouchableOpacity>
       )
     });
   };
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <Creation tintColor={this.props.tintColor}
+      <Container statusBarBackgroundColor={uiTheme.palette.primaryColor}>
+        <Toolbar
+          centerElement={"Barcode"}
+          style={{
+            paddingBottom: 16,
+          }}
+          rightElement={{
+            menu: {
+              icon: "more-vert",
+              labels: ["Disconnect"]
+            }
+          }}
+          onRightElementPress={(label) => {
+            label.index === 0 ? PrinterManager.disconnect() : null
+          }}
+        />
+        <Creation tintColor={uiTheme.palette.primaryColor}
                   generateCode={this.generateCode}
         />
+
         <ScrollView style={{flex: 1}}>
-          {this._barcodeBuilder()}
+          <ViewShot ref="viewShot"
+                    options={{format: imageType, quality: 0.9}}>
+            {this._barcodeBuilder()}
+          </ViewShot>
         </ScrollView>
-      </View>
+        <ActionButton icon={"print"} onPress={() => this.print()}/>
+      </Container>
     )
   }
 }
@@ -121,7 +193,6 @@ class Creation extends React.PureComponent {
             onSubmitEditing={() => generateCode({input, type})}
           />
         </View>
-
       </View>
     );
   }

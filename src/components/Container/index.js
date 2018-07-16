@@ -21,15 +21,15 @@ class Container extends Component {
     const {statusBarBackgroundColor} = this.props;
     return (
       <View style={styles.container}>
-        <View style={{
-          height: StatusBar.currentHeight,
-          backgroundColor: statusBarBackgroundColor || "#000"
-        }}/>
+        {/*<View style={{*/}
+          {/*height: StatusBar.currentHeight,*/}
+          {/*backgroundColor: statusBarBackgroundColor || "#000"*/}
+        {/*}}/>*/}
         <StatusBar
           barStyle={"light-content"}
           animated
           showHideTransition={'fade'}
-          translucent={true} backgroundColor="rgba(0, 0, 0, 0.3)"
+          translucent={false} backgroundColor="rgba(0, 0, 0, 1)"
         />
         {this.props.children}
       </View>
