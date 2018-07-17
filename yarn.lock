@@ -4322,10 +4322,6 @@ react-native-tab-view@^1.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-toast-native@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-toast-native/-/react-native-toast-native-1.2.1.tgz#ced3bb7cf26e63e670c881edc51bfa1087423c67"
-
 react-native-vector-icons@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.6.0.tgz#e4014311ffa6de397d914ffc31b7097a874cc8d5"

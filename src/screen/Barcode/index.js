@@ -132,10 +132,12 @@ export default class Barcode extends React.Component {
                   generateCode={this.generateCode}
         />
 
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
           <ViewShot ref="viewShot"
                     options={{format: imageType, quality: 0.9}}>
-            {this._barcodeBuilder()}
+            <View style={{paddingBottom: 70, backgroundColor: '#fff'}}>
+              {this._barcodeBuilder()}
+            </View>
           </ViewShot>
         </ScrollView>
         <ActionButton icon={"print"} onPress={() => this.print()}/>

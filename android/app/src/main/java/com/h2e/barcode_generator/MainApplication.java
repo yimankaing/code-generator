@@ -3,7 +3,6 @@ package com.h2e.barcode_generator;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.toast.RCTToastPackage;
 
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 
@@ -33,7 +32,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
               new MainReactPackage(),
-              new RCTToastPackage(),
               new RNViewShotPackage(),
               new RNFSPackage(),
               new VectorIconsPackage(),

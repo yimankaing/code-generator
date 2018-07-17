@@ -138,7 +138,6 @@ android {
 
 dependencies {
     compile project(':react-native-splash-screen')
-    compile project(':react-native-toast-native')
     compile project(':react-native-view-shot')
     compile project(':react-native-fs')
     compile project(':react-native-vector-icons')
